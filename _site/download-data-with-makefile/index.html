@@ -1,0 +1,278 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Download data with Makefile &#8211; Anh Le</title>
+<meta name="description" content="Since I have my R scripts carefully labeled in sequence, anyone can download my script and reproduce my research from raw data to the final document. The only step that is not yet reproducible in my research pipeline is how to get the same raw input data. Recently I’ve come up with two solutions:
+
+">
+<meta name="keywords" content="">
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Download data with Makefile">
+<meta name="twitter:description" content="Since I have my R scripts carefully labeled in sequence, anyone can download my script and reproduce my research from raw data to the final document. The only step that is not yet reproducible in my research pipeline is how to get the same raw input data. Recently I’ve come up with two solutions:
+
+">
+<meta name="twitter:site" content="@anh_q_le">
+<meta name="twitter:creator" content="@anh_q_le">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/default-thumb.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Download data with Makefile">
+<meta property="og:description" content="Since I have my R scripts carefully labeled in sequence, anyone can download my script and reproduce my research from raw data to the final document. The only step that is not yet reproducible in my research pipeline is how to get the same raw input data. Recently I’ve come up with two solutions:
+
+">
+<meta property="og:url" content="/download-data-with-makefile/">
+<meta property="og:site_name" content="Anh Le">
+
+<meta property="og:image" content="/images/default-thumb.png">
+
+
+
+
+
+
+<link rel="canonical" href="/download-data-with-makefile/">
+<link href="/~aql3/feed.xml" type="application/atom+xml" rel="alternate" title="Anh Le Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/~aql3/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="/~aql3/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="/~aql3/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/~aql3/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700%7CPT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/~aql3/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/~aql3/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/~aql3/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/~aql3/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/~aql3/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/~aql3/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="/~aql3">Anh Le</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav id="site-nav" class="nav">
+		    <ul>
+		        
+				    
+				    <li><a href="/~aql3/about/" >About</a></li>
+				
+				    
+				    <li><a href="/~aql3/posts/" >Sample Posts</a></li>
+				
+				    
+				    <li><a href="/~aql3/learning/" >Learning</a></li>
+				
+				    
+				    <li><a href="http://paint-by-number.github.io/" target="_blank">Data Visualization</a></li>
+				
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+<div itemscope itemtype="http://schema.org/Person">
+
+
+	<img src="/~aql3/images/bio-photo.jpg" class="bio-photo" alt="Anh Le bio photo">
+
+
+  <h3 itemprop="name">Anh Le</h3>
+  <p>PhD candidate in Political Economy at Duke. Social science, statistics, and programming.</p>
+  <a href="mailto:anh.le91@gmail.com" class="author-social" target="_blank"><i class="fa fa-fw fa-envelope-square"></i> Email</a>
+  <a href="http://twitter.com/anh_q_le" class="author-social" target="_blank"><i class="fa fa-fw fa-twitter-square"></i> Twitter</a>
+  
+  
+  <a href="http://linkedin.com/in/anhqle" class="author-social" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i> LinkedIn</a>
+  
+  
+  
+  <a href="http://github.com/LaDilettante" class="author-social" target="_blank"><i class="fa fa-fw fa-github"></i> Github</a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</div>
+
+<form method='post' action='http://blogtrottr.com'>
+    Your email: <input type='text' name='btr_email' /><br />
+    <input type='hidden' name='btr_url' value="/~aql3/feed.xml" />
+    <input type='hidden' name='schedule_type' value='0' />
+    <input type='submit' value='Follow this feed via email' />
+</form>
+
+  </div>
+  <article class="post">
+    <div class="headline-wrap">
+      
+        <h1><a href="/~aql3/download-data-with-makefile/" rel="bookmark" title="Download data with Makefile">Download data with Makefile</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>Since I have my R scripts carefully labeled in sequence, anyone can download my script and reproduce my research from raw data to the final document. The only step that is not yet reproducible in my research pipeline is how to get the same raw input data. Recently I’ve come up with two solutions:</p>
+
+<ol>
+  <li>
+    <p>When possible, use R packages to download raw data directly from database API. For example, we can directly access the World Bank’s World Development Indicators (<code class="highlighter-rouge">library(WDI)</code>), the Polity Score and the Database of Political Institutions (<code class="highlighter-rouge">library(psData)</code>). This is the best case scenario – given your script, any reader can simply hit Run to download the data, do analysis, and output results in one go.</p>
+  </li>
+  <li>
+    <p>When there is no available API and we have to go to various authors’ website to download their dataset, this can be automated by using <code class="highlighter-rouge">Makefile</code>. Read <a href="http://kbroman.org/minimal_make/">this</a> brief tutorial of how to use <code class="highlighter-rouge">Makefile</code> for reproducible research. You need to understand <code class="highlighter-rouge">Makefile</code> dependency structure to follow my script below.</p>
+  </li>
+</ol>
+
+<p>I’ll wait.</p>
+
+<p>.
+.
+.</p>
+
+<h3 id="code">Code</h3>
+
+<p>Okay, here’s how to use <code class="highlighter-rouge">Makefile</code> to download, rename, and put data in the appropriate directory. As an example, I’m downloading a dataset on authoritarian regimes by <a href="http://sites.psu.edu/dictators/">Geddes, Wright, and Frantz</a>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">all: GWF_Autocratic_Regimes_1_2
+
+GWF-Autocratic-Regimes-1.2.zip:
+	curl -o GWF-Autocratic-Regimes-1.2.zip <span class="s2">"http://sites.psu.edu/dictators/wp-content/uploads/sites/12570/2014/07/GWF-Autocratic-Regimes-1.2.zip"</span>
+
+GWF_Autocratic_Regimes_1_2: GWF-Autocratic-Regimes-1.2.zip
+	unzip GWF-Autocratic-Regimes-1.2.zip
+	mv GWF<span class="se">\ </span>Autocratic<span class="se">\ </span>Regimes<span class="se">\ </span>1.2 GWF_Autocratic_Regimes_1_2
+	find ./GWF_Autocratic_Regimes_1_2 -exec touch <span class="o">{}</span> <span class="se">\;</span></code></pre></figure>
+
+<p>Code explanation:</p>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">curl</code> is the command to download file. The <code class="highlighter-rouge">-o new_name</code> option allows you to rename the downloaded file. In this case I keep it the same.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">unzip</code> unarchives the downloaded file (<code class="highlighter-rouge">GWF-Autocratic-Regimes-1.2.zip</code>). In this case, it produces a folder called <code class="highlighter-rouge">GWF Autocratic Regimes 1.2</code></p>
+  </li>
+  <li>
+    <p>Since it’s good practice not to have spaces in file path, I rename the folder with <code class="highlighter-rouge">mv GWF\ Autocratic\ Regimes\ 1.2 GWF_Autocratic_Regimes_1_2</code></p>
+  </li>
+  <li>
+    <p>Finally, we need to recursively <code class="highlighter-rouge">touch</code> every files inside <code class="highlighter-rouge">GWF_Autocratic_Regimes_1_2</code> so that these files have a newer modification timestamp than that of <code class="highlighter-rouge">GWF-Autocratic-Regimes-1.2.zip</code>. Had we not done that, files inside <code class="highlighter-rouge">GWF_Autocratic_Regimes_1_2</code> was last modified at whenever the dataset was created. Since this timestamp is older than <code class="highlighter-rouge">GWF-Autocratic-Regimes-1.2.zip</code>, <code class="highlighter-rouge">make</code> will mistakenly think that it needs to update these files and thus keeps re-running the <code class="highlighter-rouge">unzip</code>.</p>
+  </li>
+</ul>
+
+<p>We do that by <code class="highlighter-rouge">find ./GWF_Autocratic_Regimes_1_2 -exec touch {} \;</code>. See more explanation and options in <a href="http://superuser.com/questions/432382/how-do-i-recursively-touch-files-matching-a-pattern">this Stackoverflow answer</a>.</p>
+
+<h3 id="how-to-run">How to run</h3>
+
+<p>You can download any particular data folder by running <code class="highlighter-rouge">make GWF_Autocratic_Regimes_1_2</code>, <code class="highlighter-rouge">make another_folder</code>, etc.</p>
+
+<p>Alternatively, you can list all the names in <code class="highlighter-rouge">all: GWF_Autocratic_Regimes_1_2 other_folder1 other_folder2</code> and run <code class="highlighter-rouge">make all</code>.</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="social-share">
+  <h4>Share on</h4>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=/download-data-with-makefile/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/download-data-with-makefile/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/download-data-with-makefile/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+  </ul>
+</div><!-- /.social-share -->
+        <p class="byline"><strong>Download data with Makefile</strong> was published on <time datetime="2014-10-30T08:00:00-04:00">October 30, 2014</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="/~aql3/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="/~aql3/interaction-term/" title="Interaction Term vs Split Sample">Interaction Term vs Split Sample</a></li>
+    
+      <li><a href="/~aql3/comparing-rstudio-and-spyder/" title="Comparing RStudio and Spyder">Comparing RStudio and Spyder</a></li>
+    
+      <li><a href="/~aql3/explain-the-inverse-cdf-method/" title="Explain The Inverse Cdf Method">Explain The Inverse Cdf Method</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  
+  <footer>
+    
+
+<span>&copy; 2016 Anh Le. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/~aql3/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/~aql3/assets/js/scripts.min.js"></script>
+
+
+  
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+# Site navigation links
+
+- title: About
+  url: /about/
+
+- title: Sample Posts
+  url: /posts/
+
+- title: Learning
+  url: /learning/
+
+- title: Data Visualization
+  url: http://paint-by-number.github.io/

@@ -1,0 +1,311 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Comparing RStudio and Spyder &#8211; Anh Le</title>
+<meta name="description" content="Recently I have been searching for a Python’s IDE that is similar to R’s RStudio. While ipython notebook is better than text editor for data analysis, it suffers from two problems still:
+
+">
+<meta name="keywords" content="">
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Comparing RStudio and Spyder">
+<meta name="twitter:description" content="Recently I have been searching for a Python’s IDE that is similar to R’s RStudio. While ipython notebook is better than text editor for data analysis, it suffers from two problems still:
+
+">
+<meta name="twitter:site" content="@anh_q_le">
+<meta name="twitter:creator" content="@anh_q_le">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/default-thumb.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Comparing RStudio and Spyder">
+<meta property="og:description" content="Recently I have been searching for a Python’s IDE that is similar to R’s RStudio. While ipython notebook is better than text editor for data analysis, it suffers from two problems still:
+
+">
+<meta property="og:url" content="/comparing-rstudio-and-spyder/">
+<meta property="og:site_name" content="Anh Le">
+
+<meta property="og:image" content="/images/default-thumb.png">
+
+
+
+
+
+
+<link rel="canonical" href="/comparing-rstudio-and-spyder/">
+<link href="/~aql3/feed.xml" type="application/atom+xml" rel="alternate" title="Anh Le Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/~aql3/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="/~aql3/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="/~aql3/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/~aql3/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700%7CPT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/~aql3/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/~aql3/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/~aql3/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/~aql3/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/~aql3/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/~aql3/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="/~aql3">Anh Le</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav id="site-nav" class="nav">
+		    <ul>
+		        
+				    
+				    <li><a href="/~aql3/about/" >About</a></li>
+				
+				    
+				    <li><a href="/~aql3/posts/" >Sample Posts</a></li>
+				
+				    
+				    <li><a href="/~aql3/learning/" >Learning</a></li>
+				
+				    
+				    <li><a href="http://paint-by-number.github.io/" target="_blank">Data Visualization</a></li>
+				
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+<div itemscope itemtype="http://schema.org/Person">
+
+
+	<img src="/~aql3/images/bio-photo.jpg" class="bio-photo" alt="Anh Le bio photo">
+
+
+  <h3 itemprop="name">Anh Le</h3>
+  <p>PhD candidate in Political Economy at Duke. Social science, statistics, and programming.</p>
+  <a href="mailto:anh.le91@gmail.com" class="author-social" target="_blank"><i class="fa fa-fw fa-envelope-square"></i> Email</a>
+  <a href="http://twitter.com/anh_q_le" class="author-social" target="_blank"><i class="fa fa-fw fa-twitter-square"></i> Twitter</a>
+  
+  
+  <a href="http://linkedin.com/in/anhqle" class="author-social" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i> LinkedIn</a>
+  
+  
+  
+  <a href="http://github.com/LaDilettante" class="author-social" target="_blank"><i class="fa fa-fw fa-github"></i> Github</a>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</div>
+
+<form method='post' action='http://blogtrottr.com'>
+    Your email: <input type='text' name='btr_email' /><br />
+    <input type='hidden' name='btr_url' value="/~aql3/feed.xml" />
+    <input type='hidden' name='schedule_type' value='0' />
+    <input type='submit' value='Follow this feed via email' />
+</form>
+
+  </div>
+  <article class="post">
+    <div class="headline-wrap">
+      
+        <h1><a href="/~aql3/comparing-rstudio-and-spyder/" rel="bookmark" title="Comparing RStudio and Spyder">Comparing RStudio and Spyder</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>Recently I have been searching for a Python’s IDE that is similar to R’s RStudio. While ipython notebook is better than text editor for data analysis, it suffers from two problems still:</p>
+
+<ul>
+  <li><strong>version control is difficult</strong> as output in the notebook may change even though the code doesn’t (e.g. when there’s a randomized element in the analysis).</li>
+  <li><strong>the input-output layout is meant to be narrative</strong>, which is not ideal for analysis. For example, when there are many plots, I have to scroll up and down a lot to navigate. Because of its focus on narrative, ipython notebook resembles knitr more than RStudio.</li>
+</ul>
+
+<p>After much searching, I found <a href="https://pythonhosted.org/spyder/">Spyder</a>, which is an almost-perfect equivalent of RStudio. It comes pre-packaged with Anaconda and works seamlessly with IPython and the suite of data science libraries (numpy, pandas, etc.)</p>
+
+<p>Here I compare the most important features of RStudio and Spyder so that one can make a quick switch between the two. One could read Spyder’s tutorial, but for an experienced data analyst much of it is fluff.</p>
+
+<h2 id="rstudio-and-spyder-comparison">RStudio and Spyder comparison</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Rstudio</th>
+      <th>Spyder</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Run</td>
+      <td>Ctrl - R</td>
+      <td>F5 to run the entire script <br /> F9 to run selection or line</td>
+    </tr>
+    <tr>
+      <td>Re-Run</td>
+      <td>Ctrl + Shift + P</td>
+      <td>Ctrl + F6</td>
+    </tr>
+    <tr>
+      <td>Help</td>
+      <td>help()</td>
+      <td>help() – Will also show the doc string of your own function</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>F1 with cursor over object</td>
+      <td>Ctrl-i with cursor over object</td>
+    </tr>
+    <tr>
+      <td>Clean workspace</td>
+      <td><code class="highlighter-rouge">rm(list = ls())</code></td>
+      <td><code class="highlighter-rouge">%reset</code> <br /> <code class="highlighter-rouge">%reset -f</code> to skip confirmation</td>
+    </tr>
+    <tr>
+      <td>Auto-completion</td>
+      <td>TAB</td>
+      <td>TAB</td>
+    </tr>
+    <tr>
+      <td>Go to Source</td>
+      <td>F2 with cursor over object</td>
+      <td>Ctrl+Left Click on object</td>
+    </tr>
+    <tr>
+      <td>Debug</td>
+      <td>debug() <br /> debugonce()</td>
+      <td>Ctrl + F5 starts pdb <br /> <code class="highlighter-rouge">%debug</code> starts debug where exception occurs</td>
+    </tr>
+    <tr>
+      <td>Search across Files</td>
+      <td>Ctrl + Shift + F</td>
+      <td>Ctrl + Shift + F</td>
+    </tr>
+    <tr>
+      <td>Variable Viewer</td>
+      <td><code class="highlighter-rouge">Environment</code> pane (top right)</td>
+      <td><code class="highlighter-rouge">Variable Explorer</code> pane (top right)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="tweaks-to-make-spyder-more-like-rstudio">Tweaks to make Spyder more like Rstudio</h2>
+
+<ul>
+  <li>Plot in a separate windows (instead of default inline): <code class="highlighter-rouge">Tools, Preferences, Ipython Console, Graphics</code> and under Graphics Backend select “automatic” instead of “inline”</li>
+</ul>
+
+<h2 id="unique-spyder-features-and-tips">Unique Spyder features and tips</h2>
+
+<ul>
+  <li>Console: Use ipython console instead of python console</li>
+  <li>Style: Go to <code class="highlighter-rouge">Preferences &gt; Editor &gt; Code Introspection/Analysis</code> and select the tickbox next to Style analysis (PEP8)</li>
+  <li>Cell (similar to ipython notebook): <code class="highlighter-rouge">Ctrl+Enter</code> executes the current cell. A cell is defined as the code between two lines which start with the agreed tag <code class="highlighter-rouge">#%%</code>. Shift+Enter executes the current cell and advances the cursor to the next cell</li>
+</ul>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="social-share">
+  <h4>Share on</h4>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=/comparing-rstudio-and-spyder/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/comparing-rstudio-and-spyder/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/comparing-rstudio-and-spyder/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+  </ul>
+</div><!-- /.social-share -->
+        <p class="byline"><strong>Comparing RStudio and Spyder</strong> was published on <time datetime="2015-10-01T08:00:00-04:00">October 01, 2015</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="/~aql3/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="/~aql3/interaction-term/" title="Interaction Term vs Split Sample">Interaction Term vs Split Sample</a></li>
+    
+      <li><a href="/~aql3/explain-the-inverse-cdf-method/" title="Explain The Inverse Cdf Method">Explain The Inverse Cdf Method</a></li>
+    
+      <li><a href="/~aql3/rstudio-cannot-load-rjava-in-ubuntu/" title="Fix the libjvm.so file not found error">Fix the libjvm.so file not found error</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  
+  <footer>
+    
+
+<span>&copy; 2016 Anh Le. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/~aql3/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/~aql3/assets/js/scripts.min.js"></script>
+
+
+  
+
+
+
+
+</body>
+</html>
