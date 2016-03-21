@@ -1,9 +1,8 @@
 ---
 layout:     post
 title:      "Fix the libjvm.so file not found error"
-subtitle:   "when loading rJava in Ubuntu Rstudio."
+excerpt:   "I encounter this problem whenever I try to use rJava on Ubuntu + Rstudio, and here is the solution."
 date:       2015-02-01 12:00:00
-header-img: "img/post-bg-01.jpg"
 comments: true
 ---
 

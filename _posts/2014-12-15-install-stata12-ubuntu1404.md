@@ -12,10 +12,10 @@ Ubuntu 14.04 no longer makes available several libraries that are necessary to r
 
 If you follow [Stata 12 on Ubuntu installation guide](http://eduardgrebe.net/2012/10/installing-stata-12-on-ubuntu-12-04/), at one point you have to install these libraries for GUI Stata to work (command line Stata works without them):
 
-```
+{% highlight bash %}
 apt-get install libgtksourceview2.0-0 libgnomeprint2.2-0
 ln -s /usr/lib/libgtksourceview-2.0.so.0 /usr/lib/libgtksourceview-1.0.so.0
-```
+{% endhighlight %}
 
 The problem is that Ubuntu 14.04 no longer makes available these packages.
 

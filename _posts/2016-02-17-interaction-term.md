@@ -10,13 +10,13 @@ comments: true
 
 
 
-When an analyst wants to show heterogenous treatment effect (i.e. different treatment effect for different groups), should they 1) run one regression term with an interaction, or 2) run multiple regressions, one for each group (aka split sample)? [A quick Google search shows how common this question is.](https://www.google.com/search?q=split+sample+vs+interaction+term)
+When an analyst wants to show heterogeneous treatment effect (i.e. different treatment effect for different groups), should they 1) run one regression term with an interaction, or 2) run multiple regressions, one for each group (aka split sample)? [A quick Google search shows how common this question is.](https://www.google.com/search?q=split+sample+vs+interaction+term)
 
 In this post, I will show:
 
 1. [Split sample is analogous to running a regression with an interaction term for all predictors](#comparison)
 
-2. [Using split sample to show heterogenous treatment effect is a bad idea](#split-is-bad)
+2. [Using split sample to show heterogeneous treatment effect is a bad idea](#split-is-bad)
 
 We have outcome $$y$$, independent variable of interest $$X_{\text{int}}$$, an exogenous covariate $$X_{\text{cov}}$$, and group indicator $$G \in \{A, B\}$$. We are interested in estimating the effect of $$X_{\text{int}}$$ on $$y$$, and whether the effect is different across groups $$A$$ and $$B$$. 
 
@@ -107,7 +107,7 @@ $$
 
 <a name="split-is-bad"></a>
 
-## Why split sample is a bad way to show heterogenous treatment effect
+## Why split sample is a bad way to show heterogeneous treatment effect
 
 A very common use of split sample analysis is to run separate regressions and, upon observing that the coefficient $$\beta_{int}$$ for $$X_{\text{int}}$$ is significant for group $$A$$ and insignificant for group $$B$$, conclude that its treatment effect is different across groups. 
 
@@ -140,7 +140,7 @@ group = c(rep("A", 100), rep("B", 100))
 y <- 1 + 2 * X_int + 3 * X_cov + 4 * (group=="B") + rnorm(100, sd = 4)
 {% endhighlight %}
 
-Notice that the true DGP has no interaction effect. However, if we use split sample analysis, we will see that $$\beta_{int}$$ is insigificant in group $$A$$, and significant in group $$B$$. Hence, we would wrongly conclude that there is an interaction effect between $$X_{int}$$ and $$G$$.
+Notice that the true DGP has no interaction effect. However, if we use split sample analysis, we will see that $$\beta_{int}$$ is insignificant in group $$A$$, and significant in group $$B$$. Hence, we would wrongly conclude that there is an interaction effect between $$X_{int}$$ and $$G$$.
 
 
 {% highlight r %}
@@ -192,8 +192,8 @@ What's worrisome is that we really can't know how the statistical significance w
 <tr><td colspan="3" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left"><em>Note:</em></td><td colspan="2" style="text-align:right"><sup>*</sup>p<0.1; <sup>**</sup>p<0.05; <sup>***</sup>p<0.01</td></tr>
 </table>
 
-**Take-away:** Don't use split sample analysis to show heterogenous treatment effect for one variable of interest.
+**Take-away:** Don't use split sample analysis to show heterogeneous treatment effect for one variable of interest.
 
-## What if you do want to examine heterogenous treatment effect for all variables?
+## What if you do want to examine heterogeneous treatment effect for all variables?
 
 In this case, I would recommend [a multi-level model](http://www.stat.columbia.edu/~gelman/arm/), which allows co-varying intercepts and coefficients across groups.
