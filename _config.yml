@@ -53,12 +53,12 @@ owner:
   avatar: bio-photo.jpg
   bio: "PhD candidate in Political Economy at Duke. Social science, statistics, and programming."
   email: anh.le91@gmail.com
-  disqus-shortname: anh_le
+  disqus-shortname: anhqle
   twitter: #username
   facebook: #username
   google:
     plus: #username
-    analytics:
+    analytics: UA-42749331-4
     verify:
     ad-client:
     ad-slot:
