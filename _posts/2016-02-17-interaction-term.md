@@ -192,7 +192,6 @@ What's worrisome is that we really can't know how the statistical significance w
 <tr><td colspan="3" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left"><em>Note:</em></td><td colspan="2" style="text-align:right"><sup>*</sup>p<0.1; <sup>**</sup>p<0.05; <sup>***</sup>p<0.01</td></tr>
 </table>
 
-**Take-away:** Don't use split sample analysis to show heterogeneous treatment effect for one variable of interest.
 
 ## What if you do want to examine heterogeneous treatment effect for all variables?
 
