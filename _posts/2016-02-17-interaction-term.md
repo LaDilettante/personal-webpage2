@@ -1,10 +1,7 @@
 ---
 title: "Interaction Term vs Split Sample"
-subtitle: "and why split sample is bad"
-date: "February 17, 2016"
-output: html_document
+excerpt: "Why you should not use Split Sample to show heterogeneous treatment effect."
 layout: post
-date: 2016-02-17 12:00:00
 comments: true
 ---
 
