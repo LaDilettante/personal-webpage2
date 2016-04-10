@@ -1,6 +1,6 @@
 ---
 title: "How to run MCMC in parallel"
-excerpt: "Explanation of cluster standard error and RCT."
+excerpt: "I have to run Markov chain Monte Carlo (MCMC) simulations that each takes hours and requires parameter configuration. Here's how I parallelize it."
 layout: post
 comments: true
 ---
