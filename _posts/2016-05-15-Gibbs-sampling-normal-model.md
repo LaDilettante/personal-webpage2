@@ -1,10 +1,10 @@
 ---
 title: "Gibbs sampling with Rcpp"
-author: "Anh Le"
 layout: post
-toc: yes
 comments: true
 ---
+
+{% include _toc.html %}
 
 When Gibbs sampling in R is slow, we can use Rcpp to speed it up by integrating C++ code into R. However, we cannot run Rcpp code line-by-line because C++ code needs to be compiled before being run. Rcpp code is thus harder to debug and it's paramount that we ensure the Rcpp code is doing what we wants it to.
 
@@ -55,9 +55,7 @@ $$
 There is a quick intuitive interpretation of the full conditional of $$\theta$$,
 $$p(\theta | \tilde\sigma^2, Data)$$. Its posterior mean $$\mu_n$$ is the weighted sum of the prior mean $$\mu_0$$ and the sample mean $$\bar y$$. This makes sense if we think of the posterior as combining the information from the prior and the sample.
 
-But how should we weigh the information from the prior and the sample? Intuitively, if there's more information in the prior, we should weigh it more. The amount of information is captured in the prior precision, $$\frac{1}{\tau_0^2}$$. The precision is the inverse of variance, because the smaller the variance around our prior belief about $$\theta$$, the more information we have in the prior. 
-
-In sum, because precision captures the amount of information available, we should weigh the prior mean $$\mu_0$$ by the prior precision $$\frac{1}{\tau_0^2}$$. That is indeed the weight of the prior mean in the weighted sum.
+But how should we weigh the information from the prior and the sample? Intuitively, if there's more information in the prior, we should weigh it more. The amount of information is captured in the prior precision, $$\frac{1}{\tau_0^2}$$. The precision is the inverse of variance, because the smaller the variance around our prior belief about $$\theta$$, the more information we have in the prior. In sum, because precision captures the amount of information available, we should weigh the prior mean $$\mu_0$$ by the prior precision $$\frac{1}{\tau_0^2}$$. That is indeed the weight of the prior mean in the weighted sum.
 
 Similarly, we weight the sample mean $$\bar y$$ by the sample precision $$\frac{n}{\sigma^2}$$. Note that we multiply the precision by $$n$$ to capture the fact that the bigger the sample size, the more information there is in the sample.
 
@@ -107,15 +105,47 @@ f_gibbsR <- function(y, mu_0, tau2_0, sigma2_0, nu_0, S = 1000) {
 }
 {% endhighlight %}
 
-We replicate Hoff's example with the following
+We confirm that our algorithm successfully reproduces the result in Hoff (p. 95) with exactly the same posterior distribution of theta.
 
 
 {% highlight r %}
+# Data and priors are specified as in Hoff p. 95
 y <- c(1.64,1.70,1.72,1.74,1.82,1.82,1.82,1.90,2.08)
 set.seed(1)
 gibbsR <- f_gibbsR(y = y, S = 1000,
                    mu_0 = 1.9, tau2_0 = 0.95 ** 2,
                    sigma2_0 = 0.01, nu_0 = 1)
+quantile(gibbsR$theta, c(0.025, 0.5, 0.975)) # Exactly as in Hoff p. 95
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##     2.5%      50%    97.5% 
+## 1.707282 1.804348 1.901129
+{% endhighlight %}
+
+# Rcpp Gibbs sampler
+
+We now rewrite the Gibbs sampler in Rcpp. Beyond what's covered in Hadley's Intro to Rcpp, there are 2 additional pitfall when transitioning from R to Rcpp.
+
+1. Remember to use `1.0` instead of `1` while doing division so that we get double division like in R, not integer division. For example, in Rcpp, `1 / 2 = 0` while `1.0 / 2 = 0.5`.
+
+2. `rgamma` in R uses two parameters, location and *rate*. In contrast, `rgamma` in Rcpp uses location and *scale*, which is the invert of rate.
+
+{% gist LaDilettante/5cdcdd411029a7e6120e070586909714 %}
+
+We now check and confirm that our Gibbs sampler in Rcpp produces exactly the same result as its pure R counterpart.
+
+
+{% highlight r %}
+set.seed(1)
+Rcpp::sourceCpp("gibbsC.cpp")
+gibbsC <- f_gibbsC(y = y, S = 1000,
+                   mu_0 = 1.9, tau2_0 = 0.95 ** 2,
+                   sigma2_0 = 0.01, nu_0 = 1)
+
+# Check if Rcpp result is the same as R
 quantile(gibbsR$theta, c(0.025, 0.5, 0.975))
 {% endhighlight %}
 
@@ -127,28 +157,70 @@ quantile(gibbsR$theta, c(0.025, 0.5, 0.975))
 {% endhighlight %}
 
 
+
 {% highlight r %}
-# set.seed(1)
-# gibbsR <- f_gibbsR(y = y, S = 1000,
-#                    mu_0 = 1.9, tau2_0 = 0.95 ** 2,
-#                    sigma2_0 = 0.01, nu_0 = 1)
-# set.seed(1)
-# Rcpp::sourceCpp("_source/gibbsC.cpp")
-# gibbsC <- f_gibbsC(y = y, S = 1000,
-#                    mu_0 = 1.9, tau2_0 = 0.95 ** 2,
-#                    sigma2_0 = 0.01, nu_0 = 1)
-# 
-# 
-# quantile(gibbsR$theta, c(0.025, 0.5, 0.975))
-# quantile(gibbsC$theta, c(0.025, 0.5, 0.975))
-# quantile(sqrt(gibbsR$sigma2), c(0.025, 0.5, 0.975))
-# quantile(sqrt(gibbsC$sigma2), c(0.025, 0.5, 0.975))
-# 
-# library(microbenchmark)
-# 
-# microbenchmark(f_gibbsR(y = y, S = 1000,
-#                         mu_0 = 1.9, tau2_0 = 0.95 ** 2,
-#                         sigma2_0 = 0.01, nu_0 = 1))
-# 
+quantile(gibbsC$theta, c(0.025, 0.5, 0.975))
 {% endhighlight %}
+
+
+
+{% highlight text %}
+##     2.5%      50%    97.5% 
+## 1.707282 1.804348 1.901129
+{% endhighlight %}
+
+
+
+{% highlight r %}
+quantile(sqrt(gibbsR$sigma2), c(0.025, 0.5, 0.975))
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##       2.5%        50%      97.5% 
+## 0.08797701 0.13655763 0.23918408
+{% endhighlight %}
+
+
+
+{% highlight r %}
+quantile(sqrt(gibbsC$sigma2), c(0.025, 0.5, 0.975))
+{% endhighlight %}
+
+
+
+{% highlight text %}
+##       2.5%        50%      97.5% 
+## 0.08797701 0.13655763 0.23918408
+{% endhighlight %}
+
+The Rcpp code is a lot faster as expected. The median running time of `f_gibbsC` is about 38 times faster than `f_gibbsR`.
+
+
+{% highlight r %}
+library(microbenchmark)
+microbenchmark(f_gibbsR(y = y, S = 1000,
+                        mu_0 = 1.9, tau2_0 = 0.95 ** 2,
+                        sigma2_0 = 0.01, nu_0 = 1),
+               f_gibbsC(y = y, S = 1000,
+                        mu_0 = 1.9, tau2_0 = 0.95 ** 2,
+                        sigma2_0 = 0.01, nu_0 = 1))
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Unit: microseconds
+##                                                                                    expr
+##  f_gibbsR(y = y, S = 1000, mu_0 = 1.9, tau2_0 = 0.95^2, sigma2_0 = 0.01,      nu_0 = 1)
+##  f_gibbsC(y = y, S = 1000, mu_0 = 1.9, tau2_0 = 0.95^2, sigma2_0 = 0.01,      nu_0 = 1)
+##        min        lq     mean     median        uq        max neval
+##  13658.216 24612.878 26535.26 26306.0265 28076.259 106024.898   100
+##    338.737   593.954   707.23   669.9675   808.698   1866.126   100
+##  cld
+##    b
+##   a
+{% endhighlight %}
+
 

@@ -1,10 +1,11 @@
 ---
 title: "Interaction Term vs Split Sample"
 excerpt: "Why you should not use Split Sample to show heterogeneous treatment effect."
-author: "Anh Le"
 comments: true
 layout: post
 ---
+
+{% include _toc.html %}
 
 When an analyst wants to show heterogenous treatment effect (i.e. different treatment effect for different groups), should they 1) run one regression term with an interaction, or 2) run multiple regressions, one for each group (aka split sample)? [A quick Google search shows how common this question is.](https://www.google.com/search?q=split+sample+vs+interaction+term)
 
@@ -50,6 +51,9 @@ data <- data.frame(y, X_int, X_cov, group)
 We then run three regressions, 1) full interaction, 2) split sample (group A only), 3) split sample (group B only).
 
 
+
+
+
 {% highlight r %}
 stargazer(
   lm(y ~ X_int + X_cov + group + X_int:group + X_cov:group, data = data),
@@ -62,10 +66,33 @@ stargazer(
 {% endhighlight %}
 
 
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "stargazer"
-{% endhighlight %}
+<table style="text-align:center"><tr><td colspan="4" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left"></td><td colspan="3"><em>Dependent variable:</em></td></tr>
+<tr><td></td><td colspan="3" style="border-bottom: 1px solid black"></td></tr>
+<tr><td style="text-align:left"></td><td colspan="3">y</td></tr>
+<tr><td style="text-align:left"></td><td>fully interacted |</td><td>| group A |</td><td>| group B</td></tr>
+<tr><td style="text-align:left"></td><td>(1)</td><td>(2)</td><td>(3)</td></tr>
+<tr><td colspan="4" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">X_int</td><td>1.963<sup>***</sup></td><td>1.963<sup>***</sup></td><td>6.989<sup>***</sup></td></tr>
+<tr><td style="text-align:left"></td><td>(0.045)</td><td>(0.046)</td><td>(0.042)</td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">X_cov</td><td>2.979<sup>***</sup></td><td>2.979<sup>***</sup></td><td>9.031<sup>***</sup></td></tr>
+<tr><td style="text-align:left"></td><td>(0.044)</td><td>(0.046)</td><td>(0.041)</td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">groupB</td><td>4.020<sup>***</sup></td><td></td><td></td></tr>
+<tr><td style="text-align:left"></td><td>(0.063)</td><td></td><td></td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">X_int:groupB</td><td>5.026<sup>***</sup></td><td></td><td></td></tr>
+<tr><td style="text-align:left"></td><td>(0.063)</td><td></td><td></td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">X_cov:groupB</td><td>6.052<sup>***</sup></td><td></td><td></td></tr>
+<tr><td style="text-align:left"></td><td>(0.062)</td><td></td><td></td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td><td></td></tr>
+<tr><td style="text-align:left">Constant</td><td>0.967<sup>***</sup></td><td>0.967<sup>***</sup></td><td>4.988<sup>***</sup></td></tr>
+<tr><td style="text-align:left"></td><td>(0.044)</td><td>(0.046)</td><td>(0.043)</td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td><td></td></tr>
+<tr><td colspan="4" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">Observations</td><td>1,000</td><td>509</td><td>491</td></tr>
+<tr><td style="text-align:left">R<sup>2</sup></td><td>0.988</td><td>0.919</td><td>0.994</td></tr>
+<tr><td colspan="4" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left"><em>Note:</em></td><td colspan="3" style="text-align:right"><sup>*</sup>p<0.1; <sup>**</sup>p<0.05; <sup>***</sup>p<0.01</td></tr>
+</table>
 
 We see the all coefficients in `(2) A only` differ from `(3) B only`, not just the $$\beta_{\text{int}}$$ of $$X_{\text{int}}$$. Furthermore, we can calculate the split sample coefficients from the fully interacted model.
 
@@ -126,17 +153,44 @@ stargazer(
 {% endhighlight %}
 
 
-
-{% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "stargazer"
-{% endhighlight %}
+<table style="text-align:center"><tr><td colspan="3" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left"></td><td colspan="2"><em>Dependent variable:</em></td></tr>
+<tr><td></td><td colspan="2" style="border-bottom: 1px solid black"></td></tr>
+<tr><td style="text-align:left"></td><td colspan="2">y</td></tr>
+<tr><td style="text-align:left"></td><td>group A</td><td>group B</td></tr>
+<tr><td style="text-align:left"></td><td>(1)</td><td>(2)</td></tr>
+<tr><td colspan="3" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">X_int</td><td>0.606</td><td>1.801<sup>***</sup></td></tr>
+<tr><td style="text-align:left"></td><td>(0.616)</td><td>(0.419)</td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td></tr>
+<tr><td style="text-align:left">X_cov</td><td>3.691<sup>***</sup></td><td>2.458<sup>***</sup></td></tr>
+<tr><td style="text-align:left"></td><td>(0.595)</td><td>(0.394)</td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td></tr>
+<tr><td style="text-align:left">Constant</td><td>0.504</td><td>4.563<sup>***</sup></td></tr>
+<tr><td style="text-align:left"></td><td>(0.393)</td><td>(0.422)</td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td></tr>
+<tr><td colspan="3" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">Observations</td><td>100</td><td>100</td></tr>
+<tr><td colspan="3" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left"><em>Note:</em></td><td colspan="2" style="text-align:right"><sup>*</sup>p<0.1; <sup>**</sup>p<0.05; <sup>***</sup>p<0.01</td></tr>
+</table>
 
 What's worrisome is that we really can't know how the statistical significance will turn out in a split sample analysis. Below I re-run exactly the same analysis, only using a different random seed, and we now conclude (correctly, but with the wrong methodology) that there's no interaction effect.
 
 
-{% highlight text %}
-## Error in eval(expr, envir, enclos): could not find function "stargazer"
-{% endhighlight %}
+<table style="text-align:center"><tr><td colspan="3" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left"></td><td colspan="2"><em>Dependent variable:</em></td></tr>
+<tr><td></td><td colspan="2" style="border-bottom: 1px solid black"></td></tr>
+<tr><td style="text-align:left"></td><td colspan="2">y</td></tr>
+<tr><td style="text-align:left"></td><td>group A</td><td>group B</td></tr>
+<tr><td style="text-align:left"></td><td>(1)</td><td>(2)</td></tr>
+<tr><td colspan="3" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">X_int</td><td>3.392<sup>***</sup></td><td>1.663<sup>***</sup></td></tr>
+<tr><td style="text-align:left"></td><td>(0.839)</td><td>(0.458)</td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td></tr>
+<tr><td style="text-align:left">X_cov</td><td>1.143</td><td>2.790<sup>***</sup></td></tr>
+<tr><td style="text-align:left"></td><td>(0.824)</td><td>(0.480)</td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td></tr>
+<tr><td style="text-align:left">Constant</td><td>0.813<sup>*</sup></td><td>4.856<sup>***</sup></td></tr>
+<tr><td style="text-align:left"></td><td>(0.462)</td><td>(0.474)</td></tr>
+<tr><td style="text-align:left"></td><td></td><td></td></tr>
+<tr><td colspan="3" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left">Observations</td><td>100</td><td>100</td></tr>
+<tr><td colspan="3" style="border-bottom: 1px solid black"></td></tr><tr><td style="text-align:left"><em>Note:</em></td><td colspan="2" style="text-align:right"><sup>*</sup>p<0.1; <sup>**</sup>p<0.05; <sup>***</sup>p<0.01</td></tr>
+</table>
 
 **Take-away:** Don't use split sample analysis to show heterogenous treatment effect for one variable of interest.
 
