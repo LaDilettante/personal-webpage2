@@ -1,20 +1,10 @@
 ---
 title: "Interaction Term vs Split Sample"
-subtitle: "and why split sample is bad"
+excerpt: "Why you should not use Split Sample to show heterogeneous treatment effect."
 author: "Anh Le"
-date: "February 17, 2016"
-output: html_document
-layout: post
-date: 2016-02-17 12:00:00
-author: "Anh Le"
-header-img: "img/post-bg-01.jpg"
 comments: true
+layout: post
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-library(stargazer)
-```
 
 When an analyst wants to show heterogenous treatment effect (i.e. different treatment effect for different groups), should they 1) run one regression term with an interaction, or 2) run multiple regressions, one for each group (aka split sample)? [A quick Google search shows how common this question is.](https://www.google.com/search?q=split+sample+vs+interaction+term)
 

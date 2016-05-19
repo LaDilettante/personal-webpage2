@@ -1,7 +1,7 @@
 # Site wide configuration
 
-title:            Anh Le
-locale:           en_US
+title: Anh Le
+locale: en_US
 baseurl: /~aql3
 url: people.duke.edu
 
@@ -26,11 +26,11 @@ kramdown:
   enable_coderay: false
 
 # Collection setting for statbook
-collections: 
-  statbook:
-    output: true
+# collections:
+#  statbook:
+#    output: true
 
-render: statbook
+# render: statbook
 
 
 # Octopress

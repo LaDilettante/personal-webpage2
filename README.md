@@ -32,6 +32,6 @@ To learn how to install and use this theme check out the [Setup Guide](http://mm
 
 ### Some commands to remember
 
-To write Rmd blog post in Rstudio:
+To write Rmd blog post in Rstudio, make sure that [`build.R`](https://raw.githubusercontent.com/yihui/knitr-jekyll/gh-pages/build.R) is included in the root jekyll directory (this is undocumented):
 - `which jekyll`
 - `servr::jekyll(command='/home/anh/.rvm/gems/ruby-2.0.0-p598/wrappers/jekyll build')`
