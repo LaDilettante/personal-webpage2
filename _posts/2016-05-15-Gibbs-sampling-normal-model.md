@@ -1,7 +1,11 @@
 ---
 title: "Gibbs sampling with Rcpp"
+excerpt: "I speed up my Gibbs sampler 38 times."
 layout: post
 comments: true
+tags: 
+  - Bayesian-sampler-in-Rcpp
+  - computing
 ---
 
 {% include _toc.html %}
@@ -127,7 +131,7 @@ quantile(gibbsR$theta, c(0.025, 0.5, 0.975)) # Exactly as in Hoff p. 95
 
 # Rcpp Gibbs sampler
 
-We now rewrite the Gibbs sampler in Rcpp. Beyond what's covered in Hadley's Intro to Rcpp, there are 2 additional pitfall when transitioning from R to Rcpp.
+We now rewrite the Gibbs sampler in Rcpp. If we put the R and Rcpp codes side by side, we see only a few differences thanks to Rcpp's syntactic sugar that replicates R-like syntax in C++. Most of these differences are covered in Hadley's Intro to Rcpp. Beyond that, there are 2 additional pitfalls when transitioning from R to Rcpp.
 
 1. Remember to use `1.0` instead of `1` while doing division so that we get double division like in R, not integer division. For example, in Rcpp, `1 / 2 = 0` while `1.0 / 2 = 0.5`.
 
@@ -144,83 +148,48 @@ Rcpp::sourceCpp("gibbsC.cpp")
 gibbsC <- f_gibbsC(y = y, S = 1000,
                    mu_0 = 1.9, tau2_0 = 0.95 ** 2,
                    sigma2_0 = 0.01, nu_0 = 1)
+{% endhighlight %}
 
+
+
+{% highlight r %}
 # Check if Rcpp result is the same as R
-quantile(gibbsR$theta, c(0.025, 0.5, 0.975))
+par(mfrow = c(2, 2))
+plot(density(gibbsR$theta), main = "theta from gibbsR")
+plot(density(gibbsC$theta), main = "theta from gibbsC")
+plot(density(sqrt(gibbsR$sigma2)), main = "sigma2 from gibbsR")
+plot(density(sqrt(gibbsC$sigma2)), main = "sigma2 from gibbsC")
 {% endhighlight %}
 
+<img src="/~aql3/figure/source/2016-05-15-Gibbs-sampling-normal-model/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
 
+Comparing the density plots on the left with those on the right, we see that the posterior distributions of $$\theta$$ and $$\sigma^2$$ are exactly the same for the R and Rcpp implementations.
 
-{% highlight text %}
-##     2.5%      50%    97.5% 
-## 1.707282 1.804348 1.901129
-{% endhighlight %}
-
-
-
-{% highlight r %}
-quantile(gibbsC$theta, c(0.025, 0.5, 0.975))
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##     2.5%      50%    97.5% 
-## 1.707282 1.804348 1.901129
-{% endhighlight %}
-
-
-
-{% highlight r %}
-quantile(sqrt(gibbsR$sigma2), c(0.025, 0.5, 0.975))
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##       2.5%        50%      97.5% 
-## 0.08797701 0.13655763 0.23918408
-{% endhighlight %}
-
-
-
-{% highlight r %}
-quantile(sqrt(gibbsC$sigma2), c(0.025, 0.5, 0.975))
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##       2.5%        50%      97.5% 
-## 0.08797701 0.13655763 0.23918408
-{% endhighlight %}
-
-The Rcpp code is a lot faster as expected. The median running time of `f_gibbsC` is about 38 times faster than `f_gibbsR`.
+The Rcpp code is also a lot faster as expected. The median running time of `f_gibbsC` is about 38 times faster than `f_gibbsR`.
 
 
 {% highlight r %}
 library(microbenchmark)
-microbenchmark(f_gibbsR(y = y, S = 1000,
-                        mu_0 = 1.9, tau2_0 = 0.95 ** 2,
-                        sigma2_0 = 0.01, nu_0 = 1),
-               f_gibbsC(y = y, S = 1000,
-                        mu_0 = 1.9, tau2_0 = 0.95 ** 2,
-                        sigma2_0 = 0.01, nu_0 = 1))
+benchmark_result <- microbenchmark(
+  f_gibbsR(y = y, S = 1000,
+           mu_0 = 1.9, tau2_0 = 0.95 ** 2,
+           sigma2_0 = 0.01, nu_0 = 1),
+  f_gibbsC(y = y, S = 1000,
+           mu_0 = 1.9, tau2_0 = 0.95 ** 2,
+           sigma2_0 = 0.01, nu_0 = 1))
+
+library(ggplot2)
+autoplot(benchmark_result) +
+  scale_x_discrete(labels = c("R", "Rcpp"))
 {% endhighlight %}
 
 
 
 {% highlight text %}
-## Unit: microseconds
-##                                                                                    expr
-##  f_gibbsR(y = y, S = 1000, mu_0 = 1.9, tau2_0 = 0.95^2, sigma2_0 = 0.01,      nu_0 = 1)
-##  f_gibbsC(y = y, S = 1000, mu_0 = 1.9, tau2_0 = 0.95^2, sigma2_0 = 0.01,      nu_0 = 1)
-##        min        lq     mean     median        uq        max neval
-##  13658.216 24612.878 26535.26 26306.0265 28076.259 106024.898   100
-##    338.737   593.954   707.23   669.9675   808.698   1866.126   100
-##  cld
-##    b
-##   a
+## Scale for 'x' is already present. Adding another scale for 'x',
+## which will replace the existing scale.
 {% endhighlight %}
 
+<img src="/~aql3/figure/source/2016-05-15-Gibbs-sampling-normal-model/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
 
+And that's the one of the simplest Gibbs sampler in Rcpp. In the next installment we will implement the Metropolis-Hastings sampler in Rcpp. You can click on the tag `Bayesian-sampler-in-Rcpp` to find entries in this series.

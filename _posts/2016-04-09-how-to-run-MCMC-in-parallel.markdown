@@ -3,6 +3,8 @@ title: "How to run MCMC in parallel"
 excerpt: "I have to run Markov chain Monte Carlo (MCMC) simulations that each takes hours and requires parameter configuration. Here's how I parallelize it."
 layout: post
 comments: true
+tags:
+  - computing
 ---
 
 I have to run Markov chain Monte Carlo (MCMC) simulations that each takes hours and requires parameter configuration. On this particular day, it was a Metropolis Hastings algorithm for which I have to specify the step size of the proposal distribution.
@@ -16,7 +18,7 @@ After getting sick of manually changing the step size each time, I gave in and p
 I used the `foreach` package to parallelize plus some tricks to create an informative log file and file names. Below is the code for `my_parallel_mcmc.R`:
 
 {% highlight R %}
-# We first create a grid of "tuning parameters" 
+# We first create a grid of "tuning parameters"
 # (proposal step size in my case of Metropolis Hastings)
 
 param1 <- c(0.01, 0.05, 1, 2, 5)
@@ -50,14 +52,14 @@ f_tslogit <- function(data = data, max_iter = 10000,
 for (i in 1:max_iter) {
     ... # MCMC stuff. In my case, drawing proposed value, computing acceptance ratio, etc.
 
-    # 1) Periodically print progress report every 1000 iterations 
+    # 1) Periodically print progress report every 1000 iterations
     # The printed output will be logged to the log file specified above
     if (i %% 1000 == 0) cat("Current iter: ", i, "\n")
 
-    # 2) Save result to a file at the end 
+    # 2) Save result to a file at the end
     # Note how the file name needs to be unique for each MCMC chain
     # For an informative name, I include both the param values and the time stamp
-    outfile = paste("my_MCMC", 
+    outfile = paste("my_MCMC",
                     gsub("[ \\.]", "-", paste(param1, param2)), "_",
                     strftime(Sys.time(), format = "%m-%d_%H-%M"),
                     ".RData",
