@@ -1,11 +1,10 @@
 ---
-title: "Gibbs sampling with Rcpp"
-excerpt: "I speed up my Gibbs sampler 38 times."
+title: "Speed up your Gibbs sampler 40 times with Rcpp"
+excerpt: "When Gibbs sampling in R is slow, we can use Rcpp to speed it up by integrating C++ code into R. However, we cannot run Rcpp code line-by-line because C++ code needs to be compiled before being run. Rcpp code is thus harder to debug and it's paramount that we ensure the Rcpp code is doing what we wants it to."
 layout: post
 comments: true
-tags: 
+categories: 
   - Bayesian-sampler-in-Rcpp
-  - computing
 ---
 
 {% include _toc.html %}
@@ -169,4 +168,4 @@ autoplot(benchmark_result) +
   scale_x_discrete(labels = c("R", "Rcpp"))
 ```
 
-And that's the one of the simplest Gibbs sampler in Rcpp. In the next installment we will implement the Metropolis-Hastings sampler in Rcpp. You can click on the tag `Bayesian-sampler-in-Rcpp` to find entries in this series.
+And that's the one of the simplest Gibbs sampler in Rcpp. In the next installment we will implement the Metropolis-Hastings sampler in Rcpp. You can click on the categories [Bayesian-sampler-in-Rcpp](/~aql3/bayesian-sampler-in-rcpp) to find entries in this series.
