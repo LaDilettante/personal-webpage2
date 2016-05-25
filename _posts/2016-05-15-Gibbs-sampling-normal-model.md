@@ -13,7 +13,7 @@ When Gibbs sampling in R is slow, we can use Rcpp to speed it up by integrating 
 
 The solution is to start with small Rcpp programs and make sure that they produce the same results as their pure R counterpart. Following this advice, I'm writing a series of increasingly complex Markov chain Monte Carlo (MCMC) code in Rcpp, eventually building towards my final goal of a custom Metropolis-Hastings algorithm for my work on modeling FDI flow.
 
-The first installment will be a Gibbs sampler of a semi-conjugate normal model, arguably the most common introductory model to Bayesian statistics and MCMC. (Both [Hoff's First Course in Bayesian](http://www.stat.washington.edu/people/pdhoff/book.php) and [Gelman's Bayesian Data Analysis](http://www.stat.columbia.edu/~gelman/book/) cover it.)[^1]
+The first installment will be a Gibbs sampler of a semi-conjugate normal model, arguably the most common introductory model to Bayesian statistics and MCMC. (Both [Hoff's First Course in Bayesian](http://www.stat.washington.edu/people/pdhoff/book.php) and [Gelman's Bayesian Data Analysis](http://www.stat.columbia.edu/~gelman/book/) cover it.)
 
 I'll follow Hoff's example in Chapter 6 as a ground truth to check whether my code is working correctly. For Rcpp basics, I read [Hadley Wickham's introduction to Rcpp](http://adv-r.had.co.nz/Rcpp.html). I'll note additional pitfalls along the way of converting R to Rcpp.
 
@@ -239,6 +239,3 @@ autoplot(benchmark_result) +
 <img src="/~aql3/figure/source/2016-05-15-Gibbs-sampling-normal-model/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
 
 And that's the one of the simplest Gibbs sampler in Rcpp. In the next installment we will implement the Metropolis-Hastings sampler in Rcpp. You can click on the categories [Bayesian-sampler-in-Rcpp](/~aql3/bayesian-sampler-in-rcpp) to find more entries in this series.
-
-[^1]: 
-Others have shown how to write [a Gibbs sampler in Rcpp](http://gallery.rcpp.org/articles/gibbs-sampler/), but only to sample from a bivariate distributions.
