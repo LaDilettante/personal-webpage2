@@ -28,4 +28,4 @@ The coding schemes supported are:
 - enterprise_census (old and new)
 - PCI
 
-If you find any bug, please let me know at [my package on github](http://github.com/LaDilettante/vietnamcode). I hope you find it useful.
+If you find any bug, please let me know at [my package on github](http://github.com/LaDilettante/vietnamcode). I hope you find it useful. Thanks to the people behind the package [`countrycode`](https://github.com/vincentarelbundock/countrycode) for inspiration.
